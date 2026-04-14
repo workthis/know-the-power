@@ -23,4 +23,18 @@ export class FoodService {
   async remove(id: number) {
     return await this.foodRepository.delete(id);
   }
+
+  //upd crud
+  async findAll() {
+    return await this.foodRepository.find();
+  }
+
+  async findOne(id: number) {
+    return await this.foodRepository.findOne({ where: { id } });
+  }
+
+  async update(id: number, updateFoodDto: any) {
+    await this.foodRepository.update(id, updateFoodDto);
+    return this.findOne(id);
+  }
 }

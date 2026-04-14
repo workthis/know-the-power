@@ -36,4 +36,22 @@ export class WorkoutsService {
       relations: ['exercises'],
       });
   }
+
+  //crud upd
+  async findAll() {
+    return await this.workoutRepository.find({ relations: ['exercises'] });
+  }
+
+  async findOne(id: number) {
+    return await this.workoutRepository.findOne({ where: { id }, relations: ['exercises'] });
+  }
+
+  async update(id: number, updateWorkoutDto: any) {
+    await this.workoutRepository.update(id, updateWorkoutDto);
+    return this.findOne(id);
+  }
+
+  async remove(id: number) {
+    return await this.workoutRepository.delete(id);
+  }
 }

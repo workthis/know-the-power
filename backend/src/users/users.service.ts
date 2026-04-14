@@ -20,7 +20,23 @@ export class UsersService {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
+  //upd ниже
+
+  async findAll() {
+    return await this.usersRepository.find();
+  }
+
   async findOne(id: number) {
     return await this.usersRepository.findOne({ where: { id } });
+  }
+
+  //crud upd
+  async update(id: number, updateUserDto: any) {
+    await this.usersRepository.update(id, updateUserDto);
+    return this.findOne(id);
+  }
+
+  async remove(id: number) {
+    return await this.usersRepository.delete(id);
   }
 }

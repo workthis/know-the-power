@@ -50,4 +50,13 @@ export class StatsService {
   async findByDate(date: string) {
     return await this.statsRepository.findOne({ where: { date } });
   }
+
+  //crud upd
+  async findAll() {
+    return await this.statsRepository.find({ order: { date: 'DESC' } });
+  }
+
+  async remove(id: number) {
+    return await this.statsRepository.delete(id);
+  }
 }
