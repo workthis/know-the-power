@@ -1,26 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Workout } from './entities/workout.entity';
+import { ExerciseLog } from './entities/exercise-log.entity';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
-import { UpdateWorkoutDto } from './dto/update-workout.dto';
+import { CreateExerciseDto } from './dto/create-exercise.dto';
 
 @Injectable()
 export class WorkoutsService {
-  create(createWorkoutDto: CreateWorkoutDto) {
-    return 'This action adds a new workout';
+  constructor(
+    @InjectRepository(Workout)
+    private workoutRepository: Repository<Workout>,
+    @InjectRepository(ExerciseLog)
+    private exerciseRepository: Repository<ExerciseLog>,
+  ) {}
+
+  async createWorkout(dto: CreateWorkoutDto) {
+    const workout = this.workoutRepository.create(dto);
+    return await this.workoutRepository.save(workout);
   }
 
-  findAll() {
-    return `This action returns all workouts`;
+  async addExercise(workoutId: number, dto: CreateExerciseDto) {
+    const workout = await this.workoutRepository.findOne({ where: { id: workoutId } });
+    if (!workout) {
+      throw new NotFoundException('Тренування не знайдено');
+    }
+
+    const exercise = this.exerciseRepository.create({ ...dto, workout });
+    return await this.exerciseRepository.save(exercise);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} workout`;
-  }
-
-  update(id: number, updateWorkoutDto: UpdateWorkoutDto) {
-    return `This action updates a #${id} workout`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} workout`;
+  async findByDate(date: string) {
+    return await this.workoutRepository.find({
+      where: { date },
+      relations: ['exercises'],
+      });
   }
 }

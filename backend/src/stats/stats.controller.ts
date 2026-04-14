@@ -1,34 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Patch, Body, Param } from '@nestjs/common';
 import { StatsService } from './stats.service';
 import { CreateStatDto } from './dto/create-stat.dto';
-import { UpdateStatDto } from './dto/update-stat.dto';
 
 @Controller('stats')
 export class StatsController {
   constructor(private readonly statsService: StatsService) {}
 
-  @Post()
-  create(@Body() createStatDto: CreateStatDto) {
-    return this.statsService.create(createStatDto);
+  @Patch('metrics')
+  updateMetrics(@Body() createStatDto: CreateStatDto) {
+    return this.statsService.updateMetrics(createStatDto);
   }
 
-  @Get()
-  findAll() {
-    return this.statsService.findAll();
+  @Get('weekly')
+  getWeekly() {
+    return this.statsService.getWeeklyStats();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.statsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStatDto: UpdateStatDto) {
-    return this.statsService.update(+id, updateStatDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.statsService.remove(+id);
+  @Get('date/:date')
+  findByDate(@Param('date') date: string) {
+    return this.statsService.findByDate(date);
   }
 }

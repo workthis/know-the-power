@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { WorkoutsModule } from './workouts/workouts.module';
 import { FoodModule } from './food/food.module';
 import { StatsModule } from './stats/stats.module';
+import { JournalModule } from './journal/journal.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { StatsModule } from './stats/stats.module';
     WorkoutsModule,
     FoodModule,
     StatsModule,
+    JournalModule,
   ],
   controllers: [],
   providers: [],

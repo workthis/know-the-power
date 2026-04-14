@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { FoodEntry } from './entities/food.entity';
 import { CreateFoodDto } from './dto/create-food.dto';
-import { UpdateFoodDto } from './dto/update-food.dto';
 
 @Injectable()
 export class FoodService {
-  create(createFoodDto: CreateFoodDto) {
-    return 'This action adds a new food';
+  constructor(
+    @InjectRepository(FoodEntry)
+    private readonly foodRepository: Repository<FoodEntry>,
+  ) {}
+
+  async create(dto: CreateFoodDto) {
+    const food = this.foodRepository.create(dto);
+    return await this.foodRepository.save(food);
   }
 
-  findAll() {
-    return `This action returns all food`;
+  async findByDate(date: string) {
+    return await this.foodRepository.find({ where: { date } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} food`;
-  }
-
-  update(id: number, updateFoodDto: UpdateFoodDto) {
-    return `This action updates a #${id} food`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} food`;
+  async remove(id: number) {
+    return await this.foodRepository.delete(id);
   }
 }

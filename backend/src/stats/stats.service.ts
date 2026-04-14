@@ -1,26 +1,53 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, MoreThanOrEqual } from 'typeorm';
+import { Stat } from './entities/stat.entity';
 import { CreateStatDto } from './dto/create-stat.dto';
-import { UpdateStatDto } from './dto/update-stat.dto';
 
 @Injectable()
 export class StatsService {
-  create(createStatDto: CreateStatDto) {
-    return 'This action adds a new stat';
+  constructor(
+    @InjectRepository(Stat)
+    private statsRepository: Repository<Stat>,
+  ) {}
+
+  async updateMetrics(dto: CreateStatDto) {
+    let metric = await this.statsRepository.findOne({ where: { date: dto.date } });
+
+    if (metric) {
+      metric.weight = dto.weight;
+      metric.steps = dto.steps;
+    } else {
+      metric = this.statsRepository.create(dto);
+    }
+
+    return await this.statsRepository.save(metric);
   }
 
-  findAll() {
-    return `This action returns all stats`;
+  async getWeeklyStats() {
+    const d = new Date();
+    d.setDate(d.getDate() - 7);
+    const lastWeekStr = d.toISOString().split('T')[0];
+
+    const data = await this.statsRepository.find({
+      where: { date: MoreThanOrEqual(lastWeekStr) },
+      order: { date: 'ASC' }
+    });
+
+    if (data.length === 0) return { message: 'Даних за останні 7 днів немає' };
+
+    const avgWeight = data.reduce((sum, item) => sum + item.weight, 0) / data.length;
+    const totalSteps = data.reduce((sum, item) => sum + item.steps, 0);
+
+    return {
+      period: 'Останні 7 днів',
+      averageWeight: avgWeight.toFixed(1),
+      totalSteps: totalSteps,
+      dailyDetails: data
+      };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} stat`;
-  }
-
-  update(id: number, updateStatDto: UpdateStatDto) {
-    return `This action updates a #${id} stat`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} stat`;
+  async findByDate(date: string) {
+    return await this.statsRepository.findOne({ where: { date } });
   }
 }

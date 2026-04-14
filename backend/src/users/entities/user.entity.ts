@@ -1,25 +1,25 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  passwordHash: string;
+  password!: string;
 
-  @Column({ nullable: true })
-  gender: string;
+  @Column()
+  gender!: string;
 
-  @Column({ type: 'int', nullable: true })
-  age: number;
+  @Column({ type: 'int' })
+  age!: number;
 
-  @Column({ type: 'float', nullable: true })
-  height: number;
+  @Column({ type: 'float' })
+  height!: number;
 
-  @Column({ type: 'float', nullable: true })
-  initialWeight: number;
+  @Column({ type: 'float' })
+  initialWeight!: number;
 }
