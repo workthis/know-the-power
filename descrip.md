@@ -53,5 +53,6 @@
 • Додати більше коментарів у код  
 • Виправлена помилка 500 при створенні дубліката користувача (дублікат пошти, який вже зареєстрований в системі). Тепер для логів дублікатів - 409 Conflict  
 • Ініціалізований frontend - npm create vite@latest frontend -- --template react-ts  
-• Використані бібліотеки - npm install react-router-dom axios react-hook-form zod @hookform/resolvers  
+• Використані бібліотеки - npm install react-router-dom axios react-hook-form zod @hookform/resolvers
+• Реалізований react застосунок з 3 працюючими сторінками
 </span>
