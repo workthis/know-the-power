@@ -21,21 +21,21 @@
 5. DailyMetric (Щоденні показники) — окрема сутність для відстеження фізичних змін. Сюди записується вага користувача та кількість кроків за конкретне число. Саме з цих записів програма буде будувати графіки схуднення чи активності.
 
 Ендпоінти:
-POST /api/auth/register — Реєстрація
-POST /api/auth/login — Вхід та отримання токена.
-GET /api/journal/{date} — Повний зріз дня (метрики + їжа + тренування).
-PATCH /api/stats/metrics — Оновлення ваги та кроків на конкретну дату.
-POST/PATCH/DELETE /api/food — Повний цикл керування харчуванням.
-POST/PATCH/DELETE /api/workouts — Керування тренуваннями.
-POST /api/workouts/{id}/exercise — Додавання вправ до плану.
-GET /api/stats/weekly — Зведена аналітика прогресу.
+POST /api/auth/register — Реєстрація 
+POST /api/auth/login — Вхід та отримання токена. 
+GET /api/journal/{date} — Повний зріз дня (метрики + їжа + тренування). 
+PATCH /api/stats/metrics — Оновлення ваги та кроків на конкретну дату. 
+POST/PATCH/DELETE /api/food — Повний цикл керування харчуванням. 
+POST/PATCH/DELETE /api/workouts — Керування тренуваннями. 
+POST /api/workouts/{id}/exercise — Додавання вправ до плану. 
+GET /api/stats/weekly — Зведена аналітика прогресу. 
 
-Інструкція по запуску
-Встановити Git
-Відккрити 2 вікна Git від імені адміністратора
-1: cd frontend
-npm install
-npm run dev
-2: cd backend
-npm install
-npm run start:dev
+Інструкція по запуску 
+Встановити Git 
+Відккрити 2 вікна Git від імені адміністратора 
+1: cd frontend 
+npm install 
+npm run dev 
+2: cd backend 
+npm install 
+npm run start:dev 
