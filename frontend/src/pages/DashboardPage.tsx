@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 import api from '../api/instance';
+import Modal from '../components/Modal';
+import FoodForm from '../components/FoodForm';
+import ExerciseForm from '../components/ExerciseForm';
+import WorkoutForm from '../components/WorkoutForm';
 
 const DashboardPage = () => {
   const today = new Date().toISOString().split('T')[0];
@@ -7,6 +11,14 @@ const DashboardPage = () => {
   const [selectedDate, setSelectedDate] = useState(today);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  {/* popup */}
+
+  const [isFoodModalOpen, setIsFoodModalOpen] = useState(false);
+  const [isWorkoutModalOpen, setIsWorkoutModalOpen] = useState(false);
+
+  const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
+  const [selectedWorkoutId, setSelectedWorkoutId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchJournal = async () => {
@@ -22,13 +34,39 @@ const DashboardPage = () => {
     };
 
     fetchJournal();
-  }, [selectedDate]);
+  }, [selectedDate, refreshTrigger]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value;
     if (newDate <= today) {
       setSelectedDate(newDate);
     }
+  };
+
+  const handleDeleteFood = async (id: number) => {
+    try {
+      await api.delete(`/food/${id}`);
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      alert('Помилка видалення');
+    }
+  };
+
+  const handleDeleteWorkout = async (id: number) => {
+    try {
+      await api.delete(`/workouts/${id}`);
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      alert('Помилка видалення');
+    }
+  };
+
+  const handleSuccessModal = () => {
+    setIsFoodModalOpen(false);
+    setIsWorkoutModalOpen(false);
+    setIsExerciseModalOpen(false);
+    setSelectedWorkoutId(null);
+    setRefreshTrigger(prev => prev + 1);
   };
 
   const styles = {
@@ -121,6 +159,26 @@ const DashboardPage = () => {
       color: '#6b7280',
       fontSize: '16px',
       margin: '40px 0',
+    },
+    // upd - кнопки обновка
+      actionButton: {
+      marginTop: '12px',
+      padding: '10px',
+      backgroundColor: '#f6f9ff',
+      color: '#0f62e9',
+      border: '1px dashed #0f62e9',
+      borderRadius: '8px',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      width: '100%',
+      transition: 'background-color 0.2s',
+    },
+      actionIcons: {
+      display: 'flex',
+      gap: '12px',
+      fontSize: '14px',
+      cursor: 'pointer',
     }
   };
 
@@ -157,8 +215,8 @@ const DashboardPage = () => {
                 <p style={styles.itemValue}>{data.metrics?.steps || 0}</p>
               </div>
             </div>
-
-            <div style={styles.section}>
+          
+            {/* <div style={styles.section}>
               <h3 style={styles.sectionTitle}>Харчування</h3>
               {data.food?.length > 0 ? (
                 data.food.map((item: any) => (
@@ -184,10 +242,93 @@ const DashboardPage = () => {
               ) : (
                 <p style={styles.emptyText}>Тренувань немає</p>
               )}
+            </div> */}
+
+
+            {/* upd block*/}
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>Харчування</h3>
+              {data.food?.length > 0 ? (
+                data.food.map((item: any) => (
+                  <div key={item.id} style={styles.itemCard}>
+                    <div>
+                      <p style={styles.itemText}>{item.name}</p>
+                      <p style={styles.itemValue}>{item.calories} ккал</p>
+                    </div>
+                    <div style={styles.actionIcons}>
+                      <span title="Видалити" onClick={() => handleDeleteFood(item.id)}>🗑️</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p style={styles.emptyText}>Записів немає</p>
+              )}
+              <button style={styles.actionButton} onClick={() => setIsFoodModalOpen(true)}>
+                + Додати їжу
+              </button>
             </div>
+
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>Тренування</h3>
+              {data.workouts?.length > 0 ? (
+                data.workouts.map((workout: any) => (
+                    <div key={workout.id} style={{...styles.itemCard, flexDirection: 'column', alignItems: 'stretch'}}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <p style={styles.itemText}>{workout.name}</p>
+                        <p style={styles.itemValue}>{workout.type}</p>
+                      </div>
+                      <div style={styles.actionIcons}>
+                        <span title="Додати вправу" onClick={() => { setSelectedWorkoutId(workout.id); setIsExerciseModalOpen(true); }}>➕</span>
+                        <span title="Видалити" onClick={() => handleDeleteWorkout(workout.id)}>🗑️</span>
+                      </div>
+                    </div>
+                    
+                    {workout.exercises?.length > 0 && (
+                      <ul style={{ marginTop: '12px', paddingLeft: '20px', fontSize: '14px', color: '#4b5563', marginBottom: 0 }}>
+                        {workout.exercises.map((ex: any) => (
+                          <li key={ex.id} style={{ marginBottom: '4px' }}>
+                            <strong>{ex.name}</strong>: {ex.sets}x{ex.reps} — {ex.weight} кг (відп: {ex.restTime}с)
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p style={styles.emptyText}>Тренувань немає</p>
+              )}
+              <button style={styles.actionButton} onClick={() => setIsWorkoutModalOpen(true)}>
+                + Додати тренування
+              </button>
+            </div>
+            
           </>
         )}
       </div>
+      <Modal 
+        isOpen={isFoodModalOpen} 
+        onClose={() => setIsFoodModalOpen(false)} 
+        title="Додати прийом їжі"
+      >
+        <FoodForm date={selectedDate} onSuccess={handleSuccessModal} />
+      </Modal>
+
+      <Modal 
+        isOpen={isWorkoutModalOpen} 
+        onClose={() => setIsWorkoutModalOpen(false)} 
+        title="Нове тренування"
+      >
+        <WorkoutForm date={selectedDate} onSuccess={handleSuccessModal} />
+      </Modal>
+
+      <Modal 
+        isOpen={isExerciseModalOpen} 
+        onClose={() => setIsExerciseModalOpen(false)} 
+        title="Додати вправу"
+      >
+        {selectedWorkoutId && <ExerciseForm workoutId={selectedWorkoutId} onSuccess={handleSuccessModal} />}
+      </Modal>
     </div>
   );
 };
