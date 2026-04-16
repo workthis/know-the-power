@@ -4,6 +4,7 @@ import Modal from '../components/Modal';
 import FoodForm from '../components/FoodForm';
 import ExerciseForm from '../components/ExerciseForm';
 import WorkoutForm from '../components/WorkoutForm';
+import MetricsForm from '../components/MetricsForm';
 
 const DashboardPage = () => {
   const today = new Date().toISOString().split('T')[0];
@@ -19,6 +20,8 @@ const DashboardPage = () => {
 
   const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
   const [selectedWorkoutId, setSelectedWorkoutId] = useState<number | null>(null);
+
+  const [isMetricsModalOpen, setIsMetricsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchJournal = async () => {
@@ -61,10 +64,11 @@ const DashboardPage = () => {
     }
   };
 
-  const handleSuccessModal = () => {
+const handleSuccessModal = () => {
     setIsFoodModalOpen(false);
     setIsWorkoutModalOpen(false);
     setIsExerciseModalOpen(false);
+    setIsMetricsModalOpen(false);
     setSelectedWorkoutId(null);
     setRefreshTrigger(prev => prev + 1);
   };
@@ -205,7 +209,10 @@ const DashboardPage = () => {
         ) : (
           <>
             <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Метрики</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '2px solid #f6f9ff', paddingBottom: '8px' }}>
+                <h3 style={{ fontSize: '18px', color: '#0f62e9', fontWeight: 'bold', margin: 0 }}>Метрики</h3>
+                <span title="Оновити показники" onClick={() => setIsMetricsModalOpen(true)} style={{ cursor: 'pointer', fontSize: '16px' }}>✏️</span>
+              </div>
               <div style={styles.itemCard}>
                 <p style={styles.itemText}>Вага</p>
                 <p style={styles.itemValue}>{data.metrics?.weight || '—'} кг</p>
@@ -328,6 +335,13 @@ const DashboardPage = () => {
         title="Додати вправу"
       >
         {selectedWorkoutId && <ExerciseForm workoutId={selectedWorkoutId} onSuccess={handleSuccessModal} />}
+      </Modal>
+      <Modal 
+        isOpen={isMetricsModalOpen} 
+        onClose={() => setIsMetricsModalOpen(false)} 
+        title="Метрики"
+      >
+        <MetricsForm date={selectedDate} initialData={data?.metrics} onSuccess={handleSuccessModal} />
       </Modal>
     </div>
   );
