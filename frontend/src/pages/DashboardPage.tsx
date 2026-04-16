@@ -8,21 +8,15 @@ import MetricsForm from '../components/MetricsForm';
 
 const DashboardPage = () => {
   const today = new Date().toISOString().split('T')[0];
-
   const [selectedDate, setSelectedDate] = useState(today);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  {/* popup */}
-
   const [isFoodModalOpen, setIsFoodModalOpen] = useState(false);
   const [isWorkoutModalOpen, setIsWorkoutModalOpen] = useState(false);
-
   const [isExerciseModalOpen, setIsExerciseModalOpen] = useState(false);
   const [selectedWorkoutId, setSelectedWorkoutId] = useState<number | null>(null);
-
   const [isMetricsModalOpen, setIsMetricsModalOpen] = useState(false);
-
   const [editingFood, setEditingFood] = useState<any>(null);
   const [editingWorkout, setEditingWorkout] = useState<any>(null);
 
@@ -169,7 +163,6 @@ const DashboardPage = () => {
       fontSize: '16px',
       margin: '40px 0',
     },
-    // upd - кнопки обновка
       actionButton: {
       marginTop: '12px',
       padding: '10px',
@@ -227,37 +220,6 @@ const DashboardPage = () => {
                 <p style={styles.itemValue}>{data.metrics?.steps || 0}</p>
               </div>
             </div>
-          
-            {/* <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Харчування</h3>
-              {data.food?.length > 0 ? (
-                data.food.map((item: any) => (
-                  <div key={item.id} style={styles.itemCard}>
-                    <p style={styles.itemText}>{item.name}</p>
-                    <p style={styles.itemValue}>{item.calories} ккал</p>
-                  </div>
-                ))
-              ) : (
-                <p style={styles.emptyText}>Записів немає</p>
-              )}
-            </div>
-
-            <div style={styles.section}>
-              <h3 style={styles.sectionTitle}>Тренування</h3>
-              {data.workouts?.length > 0 ? (
-                data.workouts.map((workout: any) => (
-                  <div key={workout.id} style={styles.itemCard}>
-                    <p style={styles.itemText}>{workout.name}</p>
-                    <p style={styles.itemValue}>{workout.type}</p>
-                  </div>
-                ))
-              ) : (
-                <p style={styles.emptyText}>Тренувань немає</p>
-              )}
-            </div> */}
-
-
-            {/* upd block*/}
             <div style={styles.section}>
               <h3 style={styles.sectionTitle}>Харчування</h3>
               {data.food?.length > 0 ? (
