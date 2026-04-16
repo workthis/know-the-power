@@ -30,11 +30,11 @@ POST/PATCH/DELETE /api/workouts — Керування тренуваннями.
 POST /api/workouts/{id}/exercise — Додавання вправ до плану. 
 GET /api/stats/weekly — Зведена аналітика прогресу. 
 
-Інструкція по запуску 
-Встановити Git 
-Відккрити 2 вікна Git від імені адміністратора 
-1: cd frontend 
-npm install 
+Інструкція по запуску                                                 
+Встановити Git                    
+Відккрити 2 вікна Git від імені адміністратора             
+1: cd frontend              
+npm install             
 npm run dev 
 2: cd backend 
 npm install 
