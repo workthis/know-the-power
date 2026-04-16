@@ -41,7 +41,7 @@ export default function ExerciseForm({ workoutId, onSuccess }: ExerciseFormProps
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
-      <input {...register('name')} placeholder="Назва (напр. Жим лежачи)" style={styles.input} />
+      <input {...register('name')} placeholder="Назва вправи" style={styles.input} />
       
       <div style={styles.row}>
         <input {...register('sets')} type="number" placeholder="Підходи" style={{...styles.input, flex: 1}} />

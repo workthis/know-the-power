@@ -23,6 +23,9 @@ const DashboardPage = () => {
 
   const [isMetricsModalOpen, setIsMetricsModalOpen] = useState(false);
 
+  const [editingFood, setEditingFood] = useState<any>(null);
+  const [editingWorkout, setEditingWorkout] = useState<any>(null);
+
   useEffect(() => {
     const fetchJournal = async () => {
       setLoading(true);
@@ -64,11 +67,13 @@ const DashboardPage = () => {
     }
   };
 
-const handleSuccessModal = () => {
+  const handleSuccessModal = () => {
     setIsFoodModalOpen(false);
     setIsWorkoutModalOpen(false);
     setIsExerciseModalOpen(false);
     setIsMetricsModalOpen(false);
+    setEditingFood(null);
+    setEditingWorkout(null);
     setSelectedWorkoutId(null);
     setRefreshTrigger(prev => prev + 1);
   };
@@ -263,6 +268,7 @@ const handleSuccessModal = () => {
                       <p style={styles.itemValue}>{item.calories} ккал</p>
                     </div>
                     <div style={styles.actionIcons}>
+                      <span title="Редагувати" onClick={() => { setEditingFood(item); setIsFoodModalOpen(true); }}>✏️</span>
                       <span title="Видалити" onClick={() => handleDeleteFood(item.id)}>🗑️</span>
                     </div>
                   </div>
@@ -285,10 +291,11 @@ const handleSuccessModal = () => {
                         <p style={styles.itemText}>{workout.name}</p>
                         <p style={styles.itemValue}>{workout.type}</p>
                       </div>
-                      <div style={styles.actionIcons}>
-                        <span title="Додати вправу" onClick={() => { setSelectedWorkoutId(workout.id); setIsExerciseModalOpen(true); }}>➕</span>
-                        <span title="Видалити" onClick={() => handleDeleteWorkout(workout.id)}>🗑️</span>
-                      </div>
+                        <div style={styles.actionIcons}>
+                          <span title="Додати вправу" onClick={() => { setSelectedWorkoutId(workout.id); setIsExerciseModalOpen(true); }}>➕</span>
+                          <span title="Редагувати" onClick={() => { setEditingWorkout(workout); setIsWorkoutModalOpen(true); }}>✏️</span>
+                          <span title="Видалити" onClick={() => handleDeleteWorkout(workout.id)}>🗑️</span>
+                        </div>
                     </div>
                     
                     {workout.exercises?.length > 0 && (
@@ -313,21 +320,21 @@ const handleSuccessModal = () => {
           </>
         )}
       </div>
-      <Modal 
-        isOpen={isFoodModalOpen} 
-        onClose={() => setIsFoodModalOpen(false)} 
-        title="Додати прийом їжі"
-      >
-        <FoodForm date={selectedDate} onSuccess={handleSuccessModal} />
-      </Modal>
+        <Modal 
+          isOpen={isFoodModalOpen} 
+          onClose={() => { setIsFoodModalOpen(false); setEditingFood(null); }} 
+          title={editingFood ? "Редагувати запис" : "Додати прийом їжі"}
+        >
+          <FoodForm date={selectedDate} onSuccess={handleSuccessModal} initialData={editingFood} />
+        </Modal>
 
-      <Modal 
-        isOpen={isWorkoutModalOpen} 
-        onClose={() => setIsWorkoutModalOpen(false)} 
-        title="Нове тренування"
-      >
-        <WorkoutForm date={selectedDate} onSuccess={handleSuccessModal} />
-      </Modal>
+        <Modal 
+          isOpen={isWorkoutModalOpen} 
+          onClose={() => { setIsWorkoutModalOpen(false); setEditingWorkout(null); }} 
+          title={editingWorkout ? "Редагувати тренування" : "Нове тренування"}
+        >
+          <WorkoutForm date={selectedDate} onSuccess={handleSuccessModal} initialData={editingWorkout} />
+        </Modal>
 
       <Modal 
         isOpen={isExerciseModalOpen} 
