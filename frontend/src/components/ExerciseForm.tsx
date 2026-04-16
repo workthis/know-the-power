@@ -19,11 +19,11 @@ interface ExerciseFormProps {
 }
 
 export default function ExerciseForm({ workoutId, onSuccess }: ExerciseFormProps) {
-  const { register, handleSubmit } = useForm<ExerciseFormType>({
-    resolver: zodResolver(exerciseSchema),
+    const { register, handleSubmit } = useForm<ExerciseFormType>({
+    resolver: zodResolver(exerciseSchema) as any,
   });
 
-  const onSubmit = async (data: ExerciseFormType) => {
+    const onSubmit = async (data: any) => {
     try {
       await api.post(`/workouts/${workoutId}/exercise`, data);
       onSuccess();

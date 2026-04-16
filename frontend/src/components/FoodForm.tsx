@@ -17,11 +17,11 @@ interface FoodFormProps {
 }
 
 export default function FoodForm({ date, onSuccess }: FoodFormProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm<FoodFormType>({
-    resolver: zodResolver(foodSchema),
+    const { register, handleSubmit, formState: { errors } } = useForm<FoodFormType>({
+    resolver: zodResolver(foodSchema) as any,
   });
 
-  const onSubmit = async (data: FoodFormType) => {
+ const onSubmit = async (data: any) => {
     try {
       await api.post('/food', { ...data, date });
       onSuccess();
