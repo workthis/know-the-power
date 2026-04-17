@@ -43,44 +43,44 @@ npm run start:dev
 
 
 know-the-power/
-├── backend/                        # Серверна частина (NestJS)
-│   ├── src/
-│   │   ├── auth/                   # Доступ
-│   │   │   └── dto/                # Валідація входу
-│   │   ├── users/                  # Профілі користувачів
-│   │   │   └── entities/           # Таблиця User
-│   │   ├── food/                   # Модуль харчування
-│   │   │   ├── entities/           # Таблиця FoodEntry
-│   │   │   └── dto/                # Схеми страв
-│   │   ├── workouts/               # Модуль тренувань
-│   │   │   ├── entities/           # Workout/ExerciseLog
-│   │   │   └── dto/                # Схеми вправ
-│   │   ├── stats/                  # Аналітика/Метрики
-│   │   │   ├── entities/           # Таблиця Stat
-│   │   │   └── dto/                # Вага/кроки
-│   │   ├── journal/                # Зведений щоденник
-│   │   ├── app.module.ts           # Головний модуль
-│   │   └── main.ts                 # Старт додатка
-│   ├── .env.example                # Шаблон налаштувань
-│   ├── package.json                # Залежності сервера
-│   └── README.md                   # Документація бекенду
-│
-├── frontend/                       # Клієнтська частина (React)
-│   ├── src/
-│   │   ├── api/                    # Налаштування Axios
-│   │   │   └── instance.ts         # Базовий URL
-│   │   ├── components/             # Спільні компоненти
-│   │   │   ├── Modal.tsx           # Модальні вікна
-│   │   │   └── Forms/              # Food/Workout/Metrics
-│   │   ├── pages/                  # Екрани додатку
-│   │   │   ├── DashboardPage.tsx   # Головний екран
-│   │   │   ├── WorkoutsPage.tsx    # Сторінка прогресу
-│   │   │   └── AuthPage.tsx        # Логін/Реєстрація
-│   │   ├── App.tsx                 # Роутинг/Логіка
-│   │   └── main.tsx                # Точка монтування
-│   ├── public/                     # Статичні файли
-│   ├── package.json                # Залежності фронту
-│   └── vite.config.ts              # Конфігурація Vite
-│
-├── .gitignore                      # Ігнорування сміття
-└── README.md                       # Головний опис проєкту
+├── backend/                        # Серверна частина (NestJS)  
+│   ├── src/   
+│   │   ├── auth/                   # Доступ   
+│   │   │   └── dto/                # Валідація входу    
+│   │   ├── users/                  # Профілі користувачів    
+│   │   │   └── entities/           # Таблиця User     
+│   │   ├── food/                   # Модуль харчування    
+│   │   │   ├── entities/           # Таблиця FoodEntry    
+│   │   │   └── dto/                # Схеми страв    
+│   │   ├── workouts/               # Модуль тренувань    
+│   │   │   ├── entities/           # Workout/ExerciseLog    
+│   │   │   └── dto/                # Схеми вправ    
+│   │   ├── stats/                  # Аналітика/Метрики      
+│   │   │   ├── entities/           # Таблиця Stat         
+│   │   │   └── dto/                # Вага/кроки          
+│   │   ├── journal/                # Зведений щоденник             
+│   │   ├── app.module.ts           # Головний модуль        
+│   │   └── main.ts                 # Старт додатка         
+│   ├── .env.example                # Шаблон налаштувань            
+│   ├── package.json                # Залежності сервера          
+│   └── README.md                   # Документація бекенду        
+│                       
+├── frontend/                       # Клієнтська частина (React)     
+│   ├── src/              
+│   │   ├── api/                    # Налаштування Axios          
+│   │   │   └── instance.ts         # Базовий URL           
+│   │   ├── components/             # Спільні компоненти           
+│   │   │   ├── Modal.tsx           # Модальні вікна          
+│   │   │   └── Forms/              # Food/Workout/Metrics         
+│   │   ├── pages/                  # Екрани додатку        
+│   │   │   ├── DashboardPage.tsx   # Головний екран           
+│   │   │   ├── WorkoutsPage.tsx    # Сторінка прогресу        
+│   │   │   └── AuthPage.tsx        # Логін/Реєстрація           
+│   │   ├── App.tsx                 # Роутинг/Логіка          
+│   │   └── main.tsx                # Точка монтування           
+│   ├── public/                     # Статичні файли          
+│   ├── package.json                # Залежності фронту          
+│   └── vite.config.ts              # Конфігурація Vite             
+│            
+├── .gitignore                      # Ігнорування сміття           
+└── README.md                       # Головний опис проєкту           
